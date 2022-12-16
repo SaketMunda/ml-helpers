@@ -5,6 +5,7 @@ import tensorflow as tf
 import zipfile
 import os
 import datetime
+import matplotlib.pyplot as plt
 
 # Create a function which can unzip a zipfile into current working directory
 # since we're going to download and unzip files many times.
@@ -56,3 +57,37 @@ def create_tensorboard_callback(dir_name, experiment_name):
   print(f"Saving Tensorboard log files to: {log_dir}")
   return tensorboard_callback
  
+## Create a function which will plot the loss curves and accuracy curves between
+## training and validation set
+def plot_loss_curves(history):
+  """
+  It plots two figures, one contain loss curves plotting between training and
+  validation set.
+  Another one is the accuracy curves between training and validation set of 
+  the model.
+  
+  Args:
+    history: model fit history
+  Return:
+    It plots directly into the notebook
+  """
+  
+  loss = history.history["loss"]
+  val_loss = history.history["val_loss"]
+  
+  accuracy = history.history["accuracy"]
+  val_accuracy = history.history["val_accuracy"]
+  
+  epochs = range(len(loss))
+  
+  plt.plot(epochs, loss, label='train_loss')
+  plt.plot(epochs, val_loss, label='val_loss')
+  plt.xlabel('Epochs')
+  plt.legend()
+  
+  plt.figure()
+  
+  plt.plot(epochs, accuracy, label='train_accuracy')
+  plt.plot(epochs, val_accuracy, label='val_accuracy')
+  plt.xlabel('Epochs')
+  plt.legend();
